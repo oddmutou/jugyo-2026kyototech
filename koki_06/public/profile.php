@@ -49,5 +49,13 @@ if (empty($user)) {
 </div>
 
 <div>
+  <?php if(!empty($user['website_url'])): ?>
+    <a href="<?= htmlspecialchars($user['website_url']) ?>" target="_blank" rel="noopener noreferrer">
+      <?= htmlspecialchars($user['website_url']) ?>
+    </a>
+  <?php endif; ?>
+</div>
+
+<div>
   <?= nl2br(htmlspecialchars($user['introduction'] ?? '')) ?>
 </div>
