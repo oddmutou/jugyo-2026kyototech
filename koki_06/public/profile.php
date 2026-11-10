@@ -29,5 +29,17 @@ if (empty($user)) {
 </div>
 
 <div>
+  <?php if(!empty($user['birthday'])): ?>
+  <?php
+    $birthday = DateTime::createFromFormat('Y-m-d', $user['birthday']);
+    $today = new DateTime('now');
+  ?>
+    <?= $today->diff($birthday)->y ?>歳
+  <?php else: ?>
+    生年月日未設定
+  <?php endif; ?>
+</div>
+
+<div>
   <?= nl2br(htmlspecialchars($user['introduction'] ?? '')) ?>
 </div>
