@@ -41,5 +41,13 @@ if (empty($user)) {
 </div>
 
 <div>
+  <?php if(!empty($user['prefecture'])): ?>
+    居住地: <?= htmlspecialchars($user['prefecture']) ?>
+  <?php else: ?>
+    居住地未設定
+  <?php endif; ?>
+</div>
+
+<div>
   <?= nl2br(htmlspecialchars($user['introduction'] ?? '')) ?>
 </div>
