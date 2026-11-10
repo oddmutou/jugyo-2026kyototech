@@ -23,7 +23,11 @@ if (empty($user)) {
   <?php if(empty($user['icon_filename'])): ?>
   現在アイコン未設定
   <?php else: ?>
-  <img src="/image/<?= $user['icon_filename'] ?>"
+  <img src="/image/<?= htmlspecialchars($user['icon_filename']) ?>"
     style="height: 5em; width: 5em; border-radius: 50%; object-fit: cover;">
   <?php endif; ?>
+</div>
+
+<div>
+  <?= nl2br(htmlspecialchars($user['introduction'] ?? '')) ?>
 </div>
