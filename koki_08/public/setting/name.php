@@ -48,7 +48,7 @@ if (isset($_POST['name'])) {
   ]);
   // 成功したら成功したことを示すクエリパラメータつきのURLにリダイレクト
   header("HTTP/1.1 303 See Other");
-  header("Location: ./edit_name.php?success=1");
+  header("Location: ./name.php?success=1");
   return;
 }
 ?>
