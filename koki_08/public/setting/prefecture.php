@@ -53,6 +53,7 @@ if (isset($_POST['prefecture'])) {
   return;
 }
 ?>
+<a href="./index.php">設定一覧に戻る</a>
 
 <h1>居住地(都道府県)設定</h1>
 <form method="POST">

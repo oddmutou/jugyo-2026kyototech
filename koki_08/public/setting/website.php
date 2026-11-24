@@ -47,6 +47,7 @@ if (isset($_POST['website_url'])) {
 // エラー時は入力した値をそのままフォームに戻す
 $form_value = $error !== null ? $_POST['website_url'] : ($user['website_url'] ?? '');
 ?>
+<a href="./index.php">設定一覧に戻る</a>
 
 <h1>外部Webサイトリンク設定</h1>
 
