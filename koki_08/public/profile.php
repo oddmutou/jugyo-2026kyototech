@@ -1,4 +1,5 @@
 <?php
+session_start();
 $user = null;
 if (!empty($_GET['user_id'])) {
   $user_id = $_GET['user_id'];
@@ -18,6 +19,11 @@ if (empty($user)) {
 }
 ?>
 <a href="/bbs.php">掲示板に戻る</a>
+
+<?php if(!empty($_SESSION['login_user_id']) && (int)$user['id'] === (int)$_SESSION['login_user_id']): // 自分自身の場合 ?>
+このページは、あなたのプロフィールです。
+<a href="/setting/index.php">設定を変更する</a>
+<?php endif; ?>
 
 <h1><?= htmlspecialchars($user['name']) ?> さん のプロフィール</h1>
 <div>
