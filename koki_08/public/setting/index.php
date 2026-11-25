@@ -33,6 +33,7 @@ $user = $select_sth->fetch();
 <ul>
   <li><a href="./name.php">名前設定</a></li>
   <li><a href="./icon.php">アイコン設定</a></li>
+  <li><a href="./cover.php">カバー画像設定</a></li>
   <li><a href="./introduction.php">自己紹介文設定</a></li>
   <li><a href="./birthday.php">生年月日設定</a></li>
   <li><a href="./prefecture.php">都道府県設定</a></li>

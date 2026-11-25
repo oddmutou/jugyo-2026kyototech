@@ -29,22 +29,69 @@ $select_sth->execute([
   ':user_id' => $user_id,
 ]);
 ?>
-<a href="/bbs.php">掲示板に戻る</a>
+<style>
+  body {
+    margin: 0;
+  }
 
-<?php if(!empty($_SESSION['login_user_id']) && (int)$user['id'] === (int)$_SESSION['login_user_id']): // 自分自身の場合 ?>
-このページは、あなたのプロフィールです。
-<a href="/setting/index.php">設定を変更する</a>
+  .profile-cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 1;
+    max-height: 300px;
+    object-fit: cover;
+    background: #ccc; /* 画像未設定のときにグレーにする */
+  }
+
+  .profile-body {
+    padding: 0 1em 1em;
+  }
+
+  .profile-icon {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    height: 6rem;
+    width: 6rem;
+    margin-top: -3rem; /* 上半分を、カバー画像と被せてみる */
+    border: 4px solid #fff;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #eee;
+  }
+
+  .profile-icon-empty { /* アイコン画像が無いときよう */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    text-align: center;
+    color: #666; /* カバー画像よりちょっと暗いグレー */
+  }
+</style>
+
+<div style="padding: 0.5em 1em;">
+  <a href="/bbs.php">掲示板に戻る</a>
+  <?php if(!empty($_SESSION['login_user_id']) && (int)$user['id'] === (int)$_SESSION['login_user_id']): // 自分自身の場合 ?>
+  このページは、あなたのプロフィールです。
+  <a href="/setting/index.php">設定を変更する</a>
+  <?php endif; ?>
+</div>
+
+<?php if(!empty($user['cover_filename'])): ?>
+<img class="profile-cover" src="/image/<?= htmlspecialchars($user['cover_filename']) ?>">
+<?php else: ?>
+<div class="profile-cover"></div>
+<?php endif; ?>
+
+<div class="profile-body">
+<?php if(empty($user['icon_filename'])): ?>
+<div class="profile-icon profile-icon-empty">アイコン<br>未設定</div>
+<?php else: ?>
+<img class="profile-icon" src="/image/<?= htmlspecialchars($user['icon_filename']) ?>">
 <?php endif; ?>
 
 <h1><?= htmlspecialchars($user['name']) ?> さん のプロフィール</h1>
-<div>
-  <?php if(empty($user['icon_filename'])): ?>
-  現在アイコン未設定
-  <?php else: ?>
-  <img src="/image/<?= htmlspecialchars($user['icon_filename']) ?>"
-    style="height: 5em; width: 5em; border-radius: 50%; object-fit: cover;">
-  <?php endif; ?>
-</div>
 
 <div>
   <?php if(!empty($user['birthday'])): ?>
@@ -78,6 +125,9 @@ $select_sth->execute([
   <?= nl2br(htmlspecialchars($user['introduction'] ?? '')) ?>
 </div>
 
+</div>
+
+<div class="profile-body">
 <hr>
 <?php foreach($select_sth as $entry): ?>
   <dl style="margin-bottom: 1em; padding-bottom: 1em; border-bottom: 1px solid #ccc;">
@@ -94,3 +144,4 @@ $select_sth->execute([
     </dd>
   </dl>
 <?php endforeach ?>
+</div>
