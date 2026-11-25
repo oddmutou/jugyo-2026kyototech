@@ -28,6 +28,7 @@ $select_sth = $dbh->prepare(
 $select_sth->execute([
   ':user_id' => $user_id,
 ]);
+$is_self = !empty($_SESSION['login_user_id']) && (int)$user['id'] === (int)$_SESSION['login_user_id'];
 ?>
 <style>
   body {
@@ -47,7 +48,7 @@ $select_sth->execute([
     padding: 0 1em 1em;
   }
 
-  .profile-icon {
+  .profile-icon-wrap {
     display: block;
     position: relative;
     box-sizing: border-box;
@@ -56,23 +57,51 @@ $select_sth->execute([
     margin-top: -3rem; /* 上半分を、カバー画像と被せてみる */
     border: 4px solid #fff;
     border-radius: 50%;
-    object-fit: cover;
     background: #eee;
+    overflow: hidden; /* 「変更する」の背景が丸からはみ出さないように */
+  }
+
+  .profile-icon {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 
   .profile-icon-empty { /* アイコン画像が無いときよう */
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100%;
     font-size: 0.7rem;
     text-align: center;
     color: #666; /* カバー画像よりちょっと暗いグレー */
+  }
+
+  /* 自分のアイコンにカーソルをあてたときに出る「変更する」 */
+  .profile-icon-edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5); /* 半透明のグレー */
+    color: #fff;
+    font-size: 0.8rem;
+    text-decoration: none;
+    opacity: 0; /* 普段は隠す */
+    transition: opacity 0.15s;
+  }
+
+  .profile-icon-edit:hover,
+  .profile-icon-edit:focus {
+    opacity: 1;
   }
 </style>
 
 <div style="padding: 0.5em 1em;">
   <a href="/bbs.php">掲示板に戻る</a>
-  <?php if(!empty($_SESSION['login_user_id']) && (int)$user['id'] === (int)$_SESSION['login_user_id']): // 自分自身の場合 ?>
+  <?php if($is_self): // 自分自身の場合 ?>
   このページは、あなたのプロフィールです。
   <a href="/setting/index.php">設定を変更する</a>
   <?php endif; ?>
@@ -85,11 +114,16 @@ $select_sth->execute([
 <?php endif; ?>
 
 <div class="profile-body">
-<?php if(empty($user['icon_filename'])): ?>
-<div class="profile-icon profile-icon-empty">アイコン<br>未設定</div>
-<?php else: ?>
-<img class="profile-icon" src="/image/<?= htmlspecialchars($user['icon_filename']) ?>">
-<?php endif; ?>
+<div class="profile-icon-wrap">
+  <?php if(empty($user['icon_filename'])): ?>
+  <div class="profile-icon-empty">アイコン<br>未設定</div>
+  <?php else: ?>
+  <img class="profile-icon" src="/image/<?= htmlspecialchars($user['icon_filename']) ?>">
+  <?php endif; ?>
+  <?php if($is_self): ?>
+  <a class="profile-icon-edit" href="/setting/icon.php">変更する</a>
+  <?php endif; ?>
+</div>
 
 <h1><?= htmlspecialchars($user['name']) ?> さん のプロフィール</h1>
 
